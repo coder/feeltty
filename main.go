@@ -13,13 +13,15 @@ import (
 )
 
 type rootCmd struct {
+	iterations int64
 }
 
 func (r *rootCmd) Spec() cli.CommandSpec {
 	return cli.CommandSpec{
 		Name:  "feeltty",
-		Usage: "<command [args ...]>",
+		Usage: "[flags] <command [args ...]>",
 		Desc:  "Assess the latency of a TTY interface",
+		RawArgs: true,
 	}
 }
 
@@ -47,7 +49,10 @@ func (r *rootCmd) Run(fl *pflag.FlagSet) {
 		fl.Usage()
 		os.Exit(1)
 	}
-	t := test(exec.Command(args[0], args[1:]...))
+	// TODO: make this configurable.
+	r.iterations = 32
+
+	t := test(exec.Command(args[0], args[1:]...), int(r.iterations))
 	wr := tabwriter.NewWriter(os.Stdout, 0, 2, 4, ' ', 0)
 	fmt.Fprintf(wr, "connect\t%v\n", t.connect.took())
 	var (
@@ -60,8 +65,8 @@ func (r *rootCmd) Run(fl *pflag.FlagSet) {
 	fmt.Fprintf(wr, "input mean\t%v\n", time.Millisecond * time.Duration(mean(tookMillis)))
 	fmt.Fprintf(wr, "input stddev\t%v\n", time.Millisecond * time.Duration(stddev(tookMillis)))
 	wr.Flush()
-
 }
+
 
 func main() {
 	cli.RunRoot(&rootCmd{})

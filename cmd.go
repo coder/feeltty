@@ -23,7 +23,7 @@ type timings struct {
 	input []timer
 }
 
-func test(cmd *exec.Cmd) timings {
+func test(cmd *exec.Cmd, iterations int) timings {
 	t := timings{
 		connect: startTimer(),
 	}
@@ -47,7 +47,7 @@ func test(cmd *exec.Cmd) timings {
 	time.Sleep(time.Millisecond*500)
 	rd.Discard(rd.Buffered())
 
-	for i := 0; i < 8; i++ {
+	for i := 0; i < iterations; i++ {
 		ct := startTimer()
 		c := randchar()
 		io.WriteString(tty, string(c))
