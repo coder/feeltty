@@ -37,9 +37,9 @@ func test(cmd *exec.Cmd, iterations int) timings {
 
 	rd := bufio.NewReader(tty)
 	const shellIndicator = '$'
-	_, err = rd.ReadBytes(shellIndicator)
+	prelude, err := rd.ReadBytes(shellIndicator)
 	if err != nil {
-		flog.Fatal("couldn't indication that shell started (%q): %+w", shellIndicator, err)
+		flog.Fatal("couldn't find indication that shell started (no %q in %s): %+v", shellIndicator, prelude, err)
 	}
 	t.connect.end()
 
