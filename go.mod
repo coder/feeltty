@@ -1,4 +1,4 @@
-module github.com/coder/coder
+module github.com/coder/feeltty
 
 go 1.18
 
