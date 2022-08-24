@@ -12,7 +12,7 @@ import (
 )
 
 type rootCmd struct {
-	iterations int64
+	iterations int
 }
 
 func (r *rootCmd) Spec() cli.CommandSpec {
@@ -48,6 +48,7 @@ func (r *rootCmd) Run(fl *pflag.FlagSet) {
 		fl.Usage()
 		os.Exit(1)
 	}
+
 	// TODO: make this configurable.
 	r.iterations = 32
 

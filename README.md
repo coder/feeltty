@@ -1,6 +1,6 @@
 # feelty
 
-`feeltty` quantifies the experience of a TTY.
+`feeltty` quantifies the latency experience of a TTY.
 
 # Install
 
@@ -11,11 +11,19 @@ go get github.com/coder/coder@master
 # Basic Usage
 
 ```shell script
-feeltty coder sh ammar
+$ feeltty ssh coder.c
+connect              1278.56467ms
+input sample size    32
+input mean           98.824ms
+input stddev         152.745ms
 ```
 
 or local:
 
 ```shell script
-feeltty bash
+$ feeltty bash
+connect              41.907167ms
+input sample size    32
+input mean           0s
+input stddev         0s
 ```
