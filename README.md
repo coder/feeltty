@@ -1,11 +1,11 @@
 # feelty
 
-`feeltty` quantifies the experience of a TTY. 
+`feeltty` quantifies the experience of a TTY.
 
 # Install
 
 ```shell script
-go get cdr.dev/feeltty
+go get github.com/coder/coder
 ```
 
 # Basic Usage
@@ -19,4 +19,3 @@ or local:
 ```shell script
 feeltty bash
 ```
-
