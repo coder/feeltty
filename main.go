@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"text/tabwriter"
-	"time"
 
 	"github.com/spf13/pflag"
 	"go.coder.com/cli"
@@ -18,9 +17,9 @@ type rootCmd struct {
 
 func (r *rootCmd) Spec() cli.CommandSpec {
 	return cli.CommandSpec{
-		Name:  "feeltty",
-		Usage: "[flags] <command [args ...]>",
-		Desc:  "Assess the latency of a TTY interface",
+		Name:    "feeltty",
+		Usage:   "[flags] <command [args ...]>",
+		Desc:    "Assess the latency of a TTY interface",
 		RawArgs: true,
 	}
 }
@@ -54,19 +53,19 @@ func (r *rootCmd) Run(fl *pflag.FlagSet) {
 
 	t := test(exec.Command(args[0], args[1:]...), int(r.iterations))
 	wr := tabwriter.NewWriter(os.Stdout, 0, 2, 4, ' ', 0)
-	fmt.Fprintf(wr, "connect\t%v\n", t.connect.took())
+	fmt.Fprintf(wr, "connect\t%0.5fms\n", t.connect.took().Seconds()*1000)
 	var (
-		tookMillis []float64
+		tooks []float64
 	)
 	for _, it := range t.input {
-		tookMillis = append(tookMillis, float64(it.took().Milliseconds()))
+		// flog.Infof("%+v\n", it.took())
+		tooks = append(tooks, it.took().Seconds())
 	}
-	fmt.Fprintf(wr, "input sample size\t%v\n", len(tookMillis))
-	fmt.Fprintf(wr, "input mean\t%v\n", time.Millisecond * time.Duration(mean(tookMillis)))
-	fmt.Fprintf(wr, "input stddev\t%v\n", time.Millisecond * time.Duration(stddev(tookMillis)))
+	fmt.Fprintf(wr, "input sample size\t%v\n", len(tooks))
+	fmt.Fprintf(wr, "input mean\t%0.3fms\n", mean(tooks)*1000)
+	fmt.Fprintf(wr, "input stddev\t%0.3fms\n", stddev(tooks)*1000)
 	wr.Flush()
 }
-
 
 func main() {
 	cli.RunRoot(&rootCmd{})
