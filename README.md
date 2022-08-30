@@ -5,7 +5,7 @@
 # Install
 
 ```shell script
-go get github.com/coder/coder@master
+go install github.com/coder/feeltty@master
 ```
 
 # Basic Usage
